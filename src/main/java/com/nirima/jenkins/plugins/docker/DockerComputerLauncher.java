@@ -45,9 +45,15 @@ public class DockerComputerLauncher extends DelegatingComputerLauncher {
             URL hostUrl = new URL(template.getParent().serverUrl);
             String host = hostUrl.getHost();
 
-            LOGGER.log(Level.INFO, "Creating slave SSH launcher for " + host + ":" + port);
+            LOGGER.log(Level.INFO, "Waiting and Creating slave SSH launcher for " + host + ":" + port);
             
             PortUtils.waitForPort(host, port);
+
+            try {
+                Thread.sleep(10000);
+            } catch (InterruptedException e) {
+                // no-op
+            }
 
             StandardUsernameCredentials credentials = SSHLauncher.lookupSystemCredentials(template.credentialsId);
 
